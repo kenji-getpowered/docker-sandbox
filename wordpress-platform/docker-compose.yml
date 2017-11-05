@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+   wordpress-mikael-blog:
+     depends_on:
+       - db
+     image: wordpress:latest
+     container_name: mikael-blog
+     ports:
+       - "8001:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_TABLE_PREFIX: mikael_
+   wordpress-audrey-blog:
+     depends_on:
+       - db
+     image: wordpress:latest
+     container_name: audrey-blog
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_TABLE_PREFIX: audrey
+   phpmyadmin:
+       image: phpmyadmin/phpmyadmin
+       container_name: phpmyadmin
+       environment:
+        - PMA_ARBITRARY=1
+       restart: always
+       ports:
+        - 8080:80
+       volumes:
+        - /sessions
+   portainer:
+      image: portainer/portainer
+      container_name: "portainer-app"
+      command: --templates http://templates/templates.json -d /data -H tcp://<DOCKER_HOST>:<DOCKER_PORT>
+      networks:
+        - default
+volumes:
+    db_data:
