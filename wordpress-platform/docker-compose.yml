@@ -32,7 +32,7 @@ services:
       - "traefik.port=9000"
 
   db:
-     image: hypriot/rpi-mysql:5.7
+     image: hypriot/rpi-mysql:5.5
      volumes:
        - db_data:/var/lib/mysql
      restart: always
