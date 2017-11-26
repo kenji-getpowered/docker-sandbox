@@ -16,8 +16,8 @@ services:
       - ${SERVICE_HOME}/traefik/traefik.toml:/etc/traefik/traefik.toml
     restart: always
 
-  # PORTAINER
   portainer:
+  # PORTAINER
     image: portainer/portainer:1.15.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -28,5 +28,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host: portainer.cheznous.tk"
+      - "traefik.frontend.rule=Host: portainer.krok.tk"
       - "traefik.port=9000"

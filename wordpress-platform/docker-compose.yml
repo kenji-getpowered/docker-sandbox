@@ -1,34 +1,37 @@
 version: '3'
+
 services:
+
   # TRAEFIK
-   traefik:
-      image: traefik:1.4.0
-      #command: --logLevel=DEBUG
-      ports:
-       - 80:80
-       - 443:443
-       - 8080:8080
-      volumes:
-       - /var/run/docker.sock:/var/run/docker.sock
-       - ${SERVICE_HOME}/traefik/acme.json:/etc/traefik/acme.json
-       - ${SERVICE_HOME}/traefik/traefik.toml:/etc/traefik/traefik.toml
-      restart: always
+  traefik:
+    image: traefik:1.4.0
+    #command: --logLevel=DEBUG
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${SERVICE_HOME}/traefik/acme.json:/etc/traefik/acme.json
+      - ${SERVICE_HOME}/traefik/traefik.toml:/etc/traefik/traefik.toml
+    restart: always
+
+  portainer:
   # PORTAINER
-   portainer:
-      image: portainer/portainer:1.15.0
-      volumes:
-       - /var/run/docker.sock:/var/run/docker.sock
-       - ${SERVICE_HOME}/portainer:/data
-      restart: always
-      ports:
-       - 9000:9000
-      labels:
-       - "traefik.enable=true"
-       - "traefik.backend=portainer"
-       - "traefik.frontend.rule=Host: portainer.cheznous.tk"
-       - "traefik.port=9000"
+    image: portainer/portainer:1.15.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${SERVICE_HOME}/portainer:/data
+    restart: always
+    ports:
+      - 9000:9000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host: portainer.krok.tk"
+      - "traefik.port=9000"
    db:
-     image: mysql:5.7
+     image: hypriot/rpi-mysql:5.7
      volumes:
        - db_data:/var/lib/mysql
      restart: always
